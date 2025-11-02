@@ -3,3 +3,6 @@
 
 # Build commands
 `cmake -S . -B build && cd build && cmake --build .`
+
+# Toolchain
+Use xpack 15.2, that is setup inside the folder aoc

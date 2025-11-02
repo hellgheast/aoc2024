@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
-set(CXX_STANDARD 20)
+set(CMAKE_CXX_COMPILER /home/hellgheast/dev/aoc/xpacks/.bin/g++)
+set(CXX_STANDARD 23)
 project(aoc2024)
 add_executable(aoc_day2_part2 src/main.cpp)
 
-target_compile_options(aoc_day2 PUBLIC -Wall -Wextra -Wpedantic -Weffc++ -Wconversion -Wsign-conversion)
+target_compile_options(aoc_day2_part2 PUBLIC -Wall -Wextra -Wpedantic -Weffc++ -Wconversion -Wsign-conversion -Og)
+#target_compile_options(aoc_day2_part2 PUBLIC "$<$<CONFIG:Debug>:-Og>")
