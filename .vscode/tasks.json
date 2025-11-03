@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "label" : "create outdir",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceRoot}"
+      },
+      "command":"mkdir -p output",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+    {
+      "label": "cmake generate",
+      "type": "shell",
+      "dependsOn": [
+          "create outdir",
+        ],
+      "options": {
+        "cwd": "${workspaceRoot}/output"
+      },
+      "command": "cmake",
+      "args": [
+        "-S",
+        "${fileDirname}/..",
+        "-B build",
+        "-DCMAKE_BUILD_TYPE=Debug"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+    {
+      "label": "cmake build",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceRoot}/output/build"
+      },
+      "command": "cmake",
+      "args": [
+        "--build",
+        ".",
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+    {
+      "label": "cmake build & clean",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceRoot}/output/build"
+      },
+      "command": "cmake",
+      "args": [
+        "--clean-first",
+        "--build",
+        ".",
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+    {
+      "label": "complete build",
+      "dependsOn": [
+          "cmake generate",
+          "cmake build"
+        ],
+      "dependsOrder": "sequence"
+    }
+
+  ],
+  "version": "2.0.0"
+}

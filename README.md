@@ -6,3 +6,7 @@
 
 # Toolchain
 Use xpack 15.2, that is setup inside the folder aoc
+
+# Toolchain for mac
+
+Fix clang issue `export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)`

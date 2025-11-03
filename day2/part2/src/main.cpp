@@ -17,6 +17,17 @@ bool safeNumbers(int a,int b) {
     return true;
 }
 
+template <typename T>
+void printVector(const std::vector<T>& vec)
+{
+    std::cout << "[";
+    for (size_t i = 0; i < vec.size(); ++i) {
+        std::cout << vec[i];
+        if (i + 1 < vec.size())
+            std::cout << ", ";
+    }
+    std::cout << "]\n";
+}
 
 bool lineIsSafe(bool increasingSerie,size_t index,const std::vector<int>& reportNumber) {
 
@@ -111,7 +122,7 @@ int parseLineReports(std::string line) {
     }
 
     // If the initial report is not safe, we remove one number and see if it works
-    for (size_t numberTrials = 0; numberTrials < reportNumber.size() - 1 ; numberTrials++) {
+    for (size_t numberTrials = 0; numberTrials < reportNumber.size() ; numberTrials++) {
         std::vector<int> workingNumber(reportNumber);
         workingNumber.erase(workingNumber.begin()+numberTrials);
         
@@ -119,6 +130,9 @@ int parseLineReports(std::string line) {
         result = checkReportSafe(invalidIndex,workingNumber);
         // if any invalid number,
         if(result) {
+            std::cout << "Line ";
+            printVector(workingNumber);
+            std::cout << " is safe";
             return 1;
         }
     }
