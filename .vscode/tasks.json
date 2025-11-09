@@ -73,6 +73,43 @@
           "cmake build"
         ],
       "dependsOrder": "sequence"
+    },
+    {
+      "label": "copy input in output folder",
+      "type": "shell",
+      "dependsOn": [
+          "create outdir",
+          "complete build"
+        ],
+      "options": {
+        "cwd": "${workspaceRoot}/output"
+      },
+      "command": "cp",
+      "args": [
+        "-R",
+        "${fileDirname}/../input",
+        "."
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+    {
+      "label": "delete output folder",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceRoot}"
+      },
+      "command": "rm",
+      "args": [
+        "-rf",
+        "${workspaceRoot}/output"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
     }
 
   ],
