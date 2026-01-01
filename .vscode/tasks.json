@@ -26,7 +26,7 @@
         "-S",
         "${fileDirname}/..",
         "-B build",
-        "-DCMAKE_BUILD_TYPE=Debug"
+        "-DCMAKE_BUILD_TYPE=Debug",
       ],
       "group": {
         "kind": "build",
@@ -50,23 +50,6 @@
       },
     },
     {
-      "label": "cmake build & clean",
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceRoot}/output/build"
-      },
-      "command": "cmake",
-      "args": [
-        "--clean-first",
-        "--build",
-        ".",
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-    },
-    {
       "label": "complete build",
       "dependsOn": [
           "cmake generate",
@@ -75,7 +58,7 @@
       "dependsOrder": "sequence"
     },
     {
-      "label": "copy input in output folder",
+      "label": "cp_inputFile_outDir",
       "type": "shell",
       "dependsOn": [
           "create outdir",
@@ -94,6 +77,15 @@
         "kind": "build",
         "isDefault": true
       },
+    },
+    {
+      "label": "complete_debug_setup",
+      "dependsOn": [
+          "cmake generate",
+          "cmake build",
+          "cp_inputFile_outDir"
+        ],
+      "dependsOrder": "sequence"
     },
     {
       "label": "delete output folder",

@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-
+#include <format>
 
 bool safeNumbers(int a,int b) {
 
@@ -189,37 +189,38 @@ int peekFindChar(std::istream& in, char charToFind) {
 
 
 
-int parseMulOperation(std::string mulOp) {
-    unsigned long long x=0,y= 0;
-    std::size_t pos{};
+int64_t parseMulOperation(std::string mulOp) {
+    int64_t x=0,y=0,res=0;
     if(mulOp.starts_with("ul(")) {
 
         size_t openIdx = mulOp.find_first_of('(',0);
         size_t commaIdx = mulOp.find_first_of(',',0);
         size_t closeIdx = mulOp.find_first_of(')',0);
         std::string xString = mulOp.substr(openIdx + 1,commaIdx - openIdx - 1);
-        std::cout << "XSTR " << xString  << "MULOP" << mulOp << std::endl;
+        std::string yString = mulOp.substr(commaIdx + 1,closeIdx - commaIdx - 1);
+        std::cout << "XSTR " << xString  << " YSTR " << yString << " MULOP " << mulOp << std::endl;
         try {
-            x = std::stoll(xString,&pos);
-            /* code */
+            x = std::stol(xString,nullptr);
+            y = std::stol(yString,nullptr);
+            res = x * y;
         }
         catch(const std::exception& e)
         {
             std::cerr << "Exception happened" << e.what() << '\n';
+            return -1;
         }
         
-
-        std::cout << "kowabunga" << std::endl;
+        std::cout << std::format("x: {:d} y: {:d} res: {:d}",x,y,res) << std::endl;
+        return res;
     }
-    
     
     // If it failed we return -1
     return -1;
 }
 
-int parseValidOperation(char toParse,std::ifstream& inf) {
+int64_t parseValidOperation(char toParse,std::ifstream& inf) {
     (void) inf;
-    std::cout << "\'" << toParse << "\'," << std::hex << "0x" << "" << (int) toParse << std::endl;
+    std::cout << "\'" << toParse << "\'," << std::format("{:#x}",(int)toParse) << std::endl;
     std::string peekStr{};
     std::string expectedMulOp{};
     
@@ -241,7 +242,8 @@ int parseValidOperation(char toParse,std::ifstream& inf) {
                         peekStr = peek_n(inf,(size_t)closeParenIdx); 
                         // We now have a buffer with ul(something,something)
                         std::cout << "Peeked pot operation " << peekStr << std::endl;
-                        parseMulOperation(peekStr);
+                        int64_t result = parseMulOperation(peekStr);
+                        return result;
                     }
                 } 
             } 
@@ -269,8 +271,8 @@ int main()
     }
     
     // We read the file and 
-    int totalMulOperations = 0;
-    int result = 0;
+    int64_t totalMulOperations = 0;
+    int64_t result = 0;
     char c;
     while (inf >> std::noskipws >> c) {
         result = parseValidOperation(c,inf);
